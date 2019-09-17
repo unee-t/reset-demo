@@ -16,16 +16,17 @@ export AWS_PROFILE=uneet-demo
 echo "select login_name from profiles;" | ./connect.sh -d
 ./stop-services.sh
 
+# Relies on MEFE's migration scripts on startup to prime the dropped collection
 ./reset-mongo.sh
 
+# Alter URL at DEMO_BASELINE_SQL to update seed/prime script
 curl -o demo-baseline.sql -O $(demossm DEMO_BASELINE_SQL)
 md5sum demo-baseline.sql
 ./restore.sh -d demo-baseline.sql
 
+# secret for MEFE BUGZILLA_ADMIN_KEY to have Administrator access
 demossm BUGZILLA_ADMIN_KEY_SQL > demo-BUGZILLA_ADMIN_KEY.sql
-
-cat demo-BUGZILLA_ADMIN_KEY.sql
-
+md5sum demo-BUGZILLA_ADMIN_KEY.sql
 ./restore.sh -d demo-BUGZILLA_ADMIN_KEY.sql
 
 ./start-services.sh
