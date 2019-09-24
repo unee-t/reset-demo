@@ -1,0 +1,20 @@
+---
+version: 0.2
+
+env:
+  parameter-store:
+    AWS_ACCESS_KEY_ID: ACCESS_KEY_ID_RESET
+    AWS_SECRET_ACCESS_KEY: SECRET_ACCESS_KEY_RESET
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+
+  build:
+    commands:
+      - echo Build starting on `date`
+      - echo Build the Docker image...
+      - docker build -t uneet/reset-demo .
+      - docker run -e "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID"
+        -e "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" uneet/reset-demo
